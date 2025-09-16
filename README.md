@@ -108,7 +108,7 @@ Struktur Aplikasi
 Penjelasan Modul: 
 
     Modul Auth: Menangani autentikasi pengguna (login dan register)
-    Modul Task: Menangani semua fungsi terkait manajemen tugas
+    Modul TaskTodo: Menangani semua fungsi terkait manajemen tugas
      
 
 Cara Penggunaan 
@@ -125,8 +125,8 @@ Cara Penggunaan
         Klik bagian nama di header sebelah tombol logout
         sekarang anda bisa mengupdate profil dan ubah password
 
-    Manajemen Task: 
-         Setelah login, Anda akan diarahkan ke halaman task management
+    Manajemen Tugas: 
+         Setelah login, Anda akan diarahkan ke halaman managemen tugas
          Buat tugas baru dengan mengklik tombol "Tambah Tugas Baru"
 
          - FITUR UTAMA -
