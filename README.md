@@ -1,175 +1,230 @@
 <p align="center"> <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a> </p><p align="center"> <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a> <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a> <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a> </p>
-Tentang Aplikasi Task Todo
+Task Todo - Aplikasi Manajemen Tugas dengan Laravel 12 
 
-Task Todo adalah aplikasi manajemen tugas yang dibangun dengan Laravel 12 dan TailwindCSS. Aplikasi ini menggunakan arsitektur HMVC (Hierarchical Model-View-Controller) yang memisahkan logika bisnis ke dalam modul-modul terpisah untuk memudahkan pengembangan dan pemeliharaan.
+Aplikasi Task Todo adalah sistem manajemen tugas sederhana yang dibangun menggunakan Laravel 12 dan TailwindCSS. Aplikasi ini dirancang dengan konsep HMVC (Hierarchical Model-View-Controller) menggunakan folder Modules untuk semua logika bisnis yang terletak di app/Modules. 
+Fitur Utama 
 
-Fitur utama yang tersedia:
+     Autentikasi Pengguna: Halaman login dan register
+     Manajemen Task: 
+         Membuat tugas baru
+         Melihat daftar tugas
+         Mengedit tugas
+         Menghapus tugas
+         Menandai tugas sebagai selesai/belum selesai
+         
+     Arsitektur HMVC: Logika bisnis terorganisir dalam modul terpisah
+     
 
-    Manajemen tugas lengkap (CRUD operations)
+Prasyarat 
 
-    Antarmuka responsif dengan TailwindCSS
+     PHP >= 8.2
+     Composer
+     Node.js dan npm
+     PostgreSQL
+     Git
+     
 
-    Autentikasi pengguna
-
-    Arsitektur HMVC dengan struktur Modules
-
-    Database PostgreSQL
-
-🛠️ Instalasi
-Prerequisites
-
-Pastikan software berikut telah terinstall di sistem Anda:
-
-    PHP 8.1 atau lebih baru
-
-    Composer
-
-    Node.js dan npm
-
-    PostgreSQL
-
-    Web server (Apache/Nginx)
-
-Langkah-langkah Instalasi
-
-    Clone Repository
-    bash
-
-git clone <repository-url>
+Instalasi 
+1. Clone Repositori 
+bash
+ 
+ 
+ 
+1
+2
+git clone https://github.com/username/task-todo.git
 cd task-todo
-
-Install Dependencies PHP
+ 
+ 
+ 
+2. Instal Dependensi PHP 
 bash
-
+ 
+ 
+ 
+1
 composer install
-
-Install Dependencies JavaScript
+ 
+ 
+ 
+3. Instal Dependensi JavaScript 
 bash
-
+ 
+ 
+ 
+1
 npm install
+ 
+ 
+ 
+4. Konfigurasi Environment 
 
-Konfigurasi Environment
+Salin file .env.example ke .env: 
 bash
-
+ 
+ 
+ 
+1
 cp .env.example .env
+ 
+ 
+ 
 
-Edit file .env dan sesuaikan konfigurasi database PostgreSQL:
+Generate application key: 
+bash
+ 
+ 
+ 
+1
+php artisan key:generate
+ 
+ 
+ 
+5. Konfigurasi Database PostgreSQL 
+
+Buka file .env dan atur konfigurasi database PostgreSQL: 
 env
-
+ 
+ 
+ 
+1
+2
+3
+4
+5
+6
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=nama_database_anda
-DB_USERNAME=username_database_anda
-DB_PASSWORD=password_database_anda
+DB_USERNAME=nama_user_postgres
+DB_PASSWORD=password_postgres_anda
+ 
+ 
+ 
+6. Jalankan Migration dan Seeder 
 
-Generate Application Key
+Buat database PostgreSQL terlebih dahulu, kemudian jalankan: 
 bash
+ 
+ 
+ 
+1
+2
+php artisan migrate
+php artisan db:seed
+ 
+ 
+ 
+7. Build Asset 
 
-php artisan key:generate
-
-Jalankan Migration dan Seeder
+Kompilasi asset TailwindCSS: 
 bash
-
-php artisan migrate --seed
-
-Build Assets CSS/JavaScript
-bash
-
+ 
+ 
+ 
+1
 npm run build
-
-Untuk development:
+ 
+ 
+ 
+8. Jalankan Server 
 bash
-
-npm run dev
-
-Jalankan Aplikasi
-bash
-
+ 
+ 
+ 
+1
 php artisan serve
+ 
+ 
+ 
 
-    Aplikasi akan berjalan di http://localhost:8000
+Aplikasi akan berjalan di http://localhost:8000 
+Struktur Aplikasi 
 
-🏗️ Struktur HMVC
-
-Aplikasi ini menggunakan arsitektur HMVC dengan struktur sebagai berikut:
-text
-
+Aplikasi ini menggunakan konsep HMVC dengan semua logika bisnis ditempatkan di dalam folder app/Modules: 
+ 
+ 
+ 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
 app/
 └── Modules/
-    ├── Task/
+    ├── Auth/
     │   ├── Controllers/
     │   ├── Models/
-    │   ├── Views/
-    │   ├── Routes/
-    │   └── Services/
-    └── User/
+    │   ├── Requests/
+    │   └── Routes/
+    └── Task/
         ├── Controllers/
         ├── Models/
-        ├── Views/
-        ├── Routes/
-        └── Services/
+        ├── Requests/
+        └── Routes/
+ 
+ 
+ 
+Penjelasan Modul: 
 
-Setiap modul memiliki fungsionalitas yang independen dan dapat dikembangkan secara terpisah, memanfaatkan fitur Laravel Packages untuk organisasi kode yang lebih baik.
-📦 Modul yang Tersedia
+     Modul Auth: Menangani autentikasi pengguna (login dan register)
+     Modul Task: Menangani semua fungsi terkait manajemen tugas
+     
 
-    Task Module - Mengelola CRUD operations untuk tugas menggunakan Laravel Eloquent
+Cara Penggunaan 
 
-    User Module - Mengelola autentikasi dan profil pengguna dengan Laravel Authentication
+     
 
-🗃️ Database
+    Registrasi Akun: 
+         Kunjungi halaman /register
+         Isi formulir registrasi dengan email dan password
+         
+     
 
-Aplikasi menggunakan PostgreSQL dengan struktur tabel yang diatur melalui Laravel Migrations:
+    Login: 
+         Kunjungi halaman /login
+         Masukkan email dan password yang telah didaftarkan
+         
+     
 
-    users - menyimpan data pengguna
+    Manajemen Task: 
+         Setelah login, Anda akan diarahkan ke halaman dashboard
+         Buat tugas baru dengan mengklik tombol "Tambah Tugas"
+         Lihat daftar semua tugas Anda
+         Edit tugas dengan mengklik ikon edit
+         Hapus tugas dengan mengklik ikon hapus
+         Tandai tugas sebagai selesai dengan mengklik checkbox
+         
+     
 
-    tasks - menyimpan data tugas
+Catatan Penting 
 
-    (tambahkan tabel lain jika ada)
+     Aplikasi ini tidak memiliki fitur manajemen user (hanya registrasi dan login dasar)
+     Semua logika bisnis terkait task ditempatkan di dalam Modul Task
+     Desain antarmuka menggunakan TailwindCSS dengan komponen yang telah dikonfigurasi
+     
 
-🎨 Frontend
+Kontribusi 
 
-TailwindCSS digunakan untuk styling, dengan komponen yang responsif dan modern.
-📝 Penggunaan
+Jika Anda ingin berkontribusi pada pengembangan aplikasi ini, silakan: 
 
-    Akses aplikasi melalui browser
+     Fork repositori
+     Buat branch fitur baru (git checkout -b fitur-baru)
+     Commit perubahan Anda (git commit -am 'Menambah fitur baru')
+     Push ke branch (git push origin fitur-baru)
+     Buat Pull Request
+     
 
-    Daftar atau login sebagai pengguna
+Lisensi 
 
-    Buat tugas baru melalui form yang tersedia
+Aplikasi ini dilisensikan di bawah MIT License. 
 
-    Kelola tugas (edit, tandai selesai, hapus)
-
-🧪 Testing
-
-Jalankan test suite dengan perintah:
-bash
-
-php artisan test
-
-📊 Maintenance
-
-Untuk optimalisasi autoload:
-bash
-
-composer dump-autoload
-
-Untuk clear cache:
-bash
-
-php artisan optimize:clear
-
-🤝 Kontribusi
-
-Thank you for considering contributing to the Task Todo Application! The contribution guide can be found in the Laravel documentation.
-Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the Code of Conduct.
-Security Vulnerabilities
-
-If you discover a security vulnerability within our application, please send an e-mail to the development team via [email address]. All security vulnerabilities will be promptly addressed.
-License
-
-The Task Todo Application is open-sourced software licensed under the MIT license.
-
-Catatan: Pastikan PostgreSQL sudah berjalan sebelum menjalankan migration dan seeder.
+Dikembangkan dengan ❤️ menggunakan Laravel 12 dan TailwindCSS 
