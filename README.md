@@ -75,7 +75,11 @@ Jalankan Server
 
     php artisan serve
     
-    Aplikasi akan berjalan di http://localhost:8000 
+    Aplikasi akan berjalan di http://localhost:8000
+
+    Login Default
+    email: admin@example.com
+    password: Admin123
 
 Struktur Aplikasi 
 

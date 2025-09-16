@@ -50,7 +50,7 @@ class MainController extends Controller
             
             $query->orderBy($sortField, $sortDirection);
             
-            $tasks = $query->paginate(5)->appends($request->all());
+            $tasks = $query->paginate(10)->appends($request->all());
             $users = User::orderBy('name')->get();
 
             Log::channel('audit')->info('User viewed tasks list', [

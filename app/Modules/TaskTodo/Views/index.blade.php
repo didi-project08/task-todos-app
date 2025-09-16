@@ -33,7 +33,7 @@
     </header>
 
     <div class="container mx-auto px-4 py-8 mt-16" id="mainContent">
-        <h1 class="text-xl lg:text-3xl font-bold text-gray-800 mb-5 lg:mb-0">Task Management</h1>
+        <h1 class="text-xl lg:text-3xl font-bold text-gray-800 mb-5 lg:mb-0">Managemen Tugas</h1>
         <div class="flex justify-end items-end mb-6">
             <div class="flex space-x-2">
                 <button id="toggleSearchBtn" class="md:hidden bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition duration-200 flex items-center">
@@ -43,7 +43,7 @@
                     Filters
                 </button>
                 <a href="{{ route('task-todos.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200">
-                    + Create New Task
+                    + Tambah tugas baru
                 </a>
             </div>
         </div>
@@ -64,15 +64,15 @@
             <form method="GET" action="{{ route('task-todos.index') }}">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
                         <input type="text" name="search" value="{{ request('search') }}" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                            placeholder="Search tasks or users...">
+                            placeholder="Cari tugas...">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Assigned To</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Ditugaskan Ke</label>
                         <select name="user_id" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">All Users</option>
+                            <option value="">Semua Pengguna</option>
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
@@ -81,12 +81,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date From</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
                         <input type="date" name="start_date" value="{{ request('start_date') }}" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">End Date To</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Akhir</label>
                         <input type="date" name="end_date" value="{{ request('end_date') }}" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md">
                     </div>
@@ -94,7 +94,7 @@
                 <div class="mt-4 flex flex-col md:flex-row justify-between items-start md:items-center">
                     <div class="mb-2 md:mb-0">
                         <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
-                            Search
+                            Cari
                         </button>
                         <a href="{{ route('task-todos.index') }}" class="ml-2 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
                             Reset
@@ -121,11 +121,11 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ditugaskan Ke</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Mulai</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Akhir</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">

@@ -92,8 +92,8 @@
                         Saya menyetujui 
                         <a href="#" class="text-indigo-600 hover:text-indigo-500">syarat dan ketentuan</a>
                     </label>
+                    <span class="text-red-500 text-xs hidden" id="termsError"></span>
                 </div>
-                <span class="text-red-500 text-xs hidden" id="termsError"></span>
 
                 <!-- Submit Button -->
                 <div>
@@ -115,7 +115,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             // Elements
@@ -123,7 +122,7 @@
             const $submitBtn = $('#submitBtn');
             const $password = $('#password');
             const $passwordConfirm = $('#password_confirmation');
-            
+
             // Error spans
             const $nameError = $('#nameError');
             const $emailError = $('#emailError');
