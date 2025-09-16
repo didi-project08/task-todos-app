@@ -15,6 +15,8 @@ Fitur Utama
          Melihat daftar tugas
          Mengedit tugas
          Menghapus tugas
+     Profile
+         Update data pengguna
          
      Arsitektur HMVC: Logika bisnis terorganisir dalam modul terpisah
      
@@ -114,11 +116,11 @@ Penjelasan Modul:
 Cara Penggunaan 
 
     Registrasi Akun: 
-        Kunjungi halaman /register
+        Kunjungi halaman /auth/register
         Isi formulir registrasi dengan email dan password
          
     Login: 
-        Kunjungi halaman /login
+        Kunjungi halaman /auth/login
         Masukkan email dan password yang telah didaftarkan
 
     Profil:
