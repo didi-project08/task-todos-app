@@ -10,12 +10,12 @@ Disclaimer
 Fitur Utama 
 
      Autentikasi Pengguna: Halaman login dan register
-     Manajemen Task: 
+     Manajemen Tugas: 
          Membuat tugas baru
          Melihat daftar tugas
          Mengedit tugas
          Menghapus tugas
-     Profile
+     Profil:
          Update data pengguna
          
      Arsitektur HMVC: Logika bisnis terorganisir dalam modul terpisah
@@ -124,10 +124,12 @@ Cara Penggunaan
         Masukkan email dan password yang telah didaftarkan
 
     Profil:
+        Kunjungi halaman /profile
         Klik bagian nama di header sebelah tombol logout
         sekarang anda bisa mengupdate profil dan ubah password
 
-    Manajemen Tugas: 
+    Manajemen Tugas:
+         Kunjungi halaman /task-todos
          Setelah login, Anda akan diarahkan ke halaman managemen tugas
          Buat tugas baru dengan mengklik tombol "Tambah Tugas Baru"
 
