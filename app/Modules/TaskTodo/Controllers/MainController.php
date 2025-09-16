@@ -5,18 +5,23 @@ namespace App\Modules\TaskTodo\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
-use App\Modules\TaskTodo\Models\Task;
 use App\Modules\Auth\Models\User;
+use App\Modules\TaskTodo\Models\Task;
+use App\Modules\TaskTodo\Models\UserPosition;
+use App\Modules\TaskTodo\Models\Position;
 
 class MainController extends Controller
 {
     public function index(Request $request)
     {
         try {
-            $query = Task::with('user');
+            $query = Task::with('user', 'user.positions');
 
             // Pencarian berdasarkan keyword
             if ($request->has('search') && !empty($request->search)) {
@@ -126,7 +131,7 @@ class MainController extends Controller
     public function show($id)
     {
         try {
-            $task = Task::with('user')->findOrFail($id);
+            $task = Task::with('user', 'user.positions')->findOrFail($id);
 
             Log::channel('audit')->info('User viewed task', [
                 'user_id' => Auth::id(),
@@ -251,6 +256,123 @@ class MainController extends Controller
 
             return redirect()->route('task-todos.index')
                 ->with('error', 'Failed to delete task');
+        }
+    }
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+        $positions = DB::table('positions')->get();
+        $userPositions = DB::table('user_positions')
+            ->where('user_id', $user->id)
+            ->pluck('position_id')
+            ->toArray();
+
+        return view('source::Auth.Views.profile', compact('user', 'positions', 'userPositions'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        $passwordChanged = false;
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|min:3',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'positions' => 'nullable|array',
+            'positions.*' => 'exists:positions,id',
+            'current_password' => 'nullable|required_with:new_password',
+            'new_password' => 'nullable|min:8|confirmed|different:current_password',
+        ], [
+            'name.required' => 'Nama harus diisi',
+            'name.min' => 'Nama minimal 3 karakter',
+            'email.required' => 'Email harus diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah digunakan',
+            'new_password.min' => 'Password baru minimal 8 karakter',
+            'new_password.confirmed' => 'Konfirmasi password tidak sesuai',
+            'new_password.different' => 'Password baru harus berbeda dengan password lama',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        if ($request->filled('current_password')) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return redirect()->back()
+                    ->withErrors(['current_password' => 'Password lama tidak sesuai'])
+                    ->withInput();
+            }
+            
+            $passwordChanged = true;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $userData = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+
+            if ($request->filled('new_password')) {
+                $userData['password'] = Hash::make($request->new_password);
+            }
+
+            $user->update($userData);
+
+            if ($request->has('positions')) {
+                DB::table('user_positions')
+                    ->where('user_id', $user->id)
+                    ->delete();
+
+                foreach ($request->positions as $positionId) {
+                    DB::table('user_positions')->insert([
+                        'id' => \Illuminate\Support\Str::uuid(),
+                        'user_id' => $user->id,
+                        'position_id' => $positionId,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            Log::channel('audit')->info('Profile updated successfully', [
+                'user_id' => $user->id,
+                'action' => 'profile_update',
+                'password_changed' => $passwordChanged,
+                'ip_address' => $request->ip(),
+            ]);
+
+            if ($passwordChanged) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->route('login')
+                    ->with('status', 'Profil berhasil diperbarui! Silakan login kembali dengan password baru Anda.');
+            }
+
+            return redirect()->route('profile')
+                ->with('success', 'Profil berhasil diperbarui!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::channel('audit')->error('Error updating profile', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'ip_address' => $request->ip(),
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat memperbarui profil.')
+                ->withInput();
         }
     }
 }

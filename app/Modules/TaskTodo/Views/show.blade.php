@@ -27,6 +27,13 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Ditugaskan ke</label>
                         <p class="mt-1 text-gray-900">{{ $task->user->name }}</p>
+                        <label class="block text-sm font-medium text-gray-600">Posisi</label>
+                        @if($task->user->positions->count() > 0)
+                            <p class="text-sm text-gray-500">{{ $task->user->positions->pluck('name')->implode(', ') }}</p>
+                        @else
+                            <p class="text-sm text-gray-500">Tidak ada posisi yang di tambahkan</p>
+                        @endif
+                        <label class="block text-sm font-medium text-gray-600">Email</label>
                         <p class="text-sm text-gray-500">{{ $task->user->email }}</p>
                     </div>
                 </div>

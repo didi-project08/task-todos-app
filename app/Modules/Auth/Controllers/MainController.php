@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\DB;
 
 use App\Modules\Auth\Models\User;
 
@@ -22,7 +23,8 @@ class MainController extends Controller
 
     public function vRegister()
     {
-        return view('source::Auth.Views.register');
+        $positions = DB::table('positions')->get();
+        return view('source::Auth.Views.register', compact('positions'));
     }
 
     public function loginValidate(Request $request)
@@ -131,45 +133,73 @@ class MainController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|min:3',
             'email' => 'required|email|unique:users,email',
+            'position_id' => 'required|exists:positions,id',
             'password' => [
                 'required',
                 'min:8',
                 'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z]).+$/', // positive lookahead untuk huruf besar dan kecil
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/', // huruf besar, kecil, dan angka
             ],
             'terms' => 'required|accepted'
         ], [
+            'position_id.required' => 'Pilih posisi',
+            'position_id.exists' => 'Posisi tidak valid',
             'terms.required' => 'Anda harus menyetujui syarat dan ketentuan',
             'terms.accepted' => 'Anda harus menyetujui syarat dan ketentuan',
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
             'password.regex' => 'Password harus mengandung minimal 1 huruf besar, 1 huruf kecil, dan 1 angka'
         ]);
         
-        $user = User::create([
-            'id' => (string) Str::uuid(),
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'email_verified_at' => null 
-        ]);
-
-        RateLimiter::clear('register-attempt:' . $request->ip());
-
-        Log::channel('audit')->info('User registered successfully', [
-            'user_id' => $user->id,
-            'user_email' => $user->email,
-            'user_name' => $user->name,
-            'action' => 'registration_success',
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'timestamp' => now()
-        ]);
-
-        //Auto Login Setelah Daftar
-        // auth()->login($user);
+        DB::beginTransaction();
         
-        return redirect()->route('login')
-            ->with('status', 'Registrasi berhasil! Silakan login.');
+        try {
+            $user = User::create([
+                'id' => (string) Str::uuid(),
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'email_verified_at' => null 
+            ]);
+
+            DB::table('user_positions')->insert([
+                'id' => (string) Str::uuid(),
+                'user_id' => $user->id,
+                'position_id' => $validated['position_id'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+
+            RateLimiter::clear('register-attempt:' . $request->ip());
+
+            Log::channel('audit')->info('User registered successfully', [
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+                'user_name' => $user->name,
+                'position_id' => $validated['position_id'],
+                'action' => 'registration_success',
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'timestamp' => now()
+            ]);
+
+            return redirect()->route('login')
+                ->with('status', 'Registrasi berhasil! Silakan login.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            Log::channel('audit')->error('Error during registration', [
+                'error' => $e->getMessage(),
+                'ip_address' => $request->ip(),
+                'timestamp' => now()
+            ]);
+
+            return back()->withErrors([
+                'email' => 'Terjadi kesalahan saat registrasi. Silakan coba lagi.',
+            ])->withInput();
+        }
     }
 
     public function logout(Request $request)

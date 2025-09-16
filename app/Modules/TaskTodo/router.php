@@ -15,3 +15,8 @@ Route::controller($CLASS)->middleware('auth')->group(function() {
     Route::put('/'.$MAIN_URI.'/update/{id}', 'update')->name('task-todos.update');
     Route::delete('/'.$MAIN_URI.'/destroy/{id}', 'destroy')->name('task-todos.destroy');
 });
+
+Route::controller($CLASS)->middleware('auth')->group(function() {
+    Route::get('/profile','editProfile')->name('profile');
+    Route::put('/profile', 'updateProfile')->name('profile.update');
+});

@@ -10,15 +10,17 @@
                 
                 <div class="flex items-center justify-between lg:justify-end w-full max-w-md">
                     <div class="flex items-center space-x-2 lg:pr-5">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                            <span class="text-blue-600 font-semibold">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
-                            <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
-                        </div>
+                        <a href="{{ route('profile') }}" class="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded-lg transition duration-200">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                <span class="text-blue-600 font-semibold">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
+                            </div>
+                        </a>
                     </div>
                     
                     <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -124,6 +126,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ditugaskan Ke</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posisi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Mulai</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Akhir</th>
                         </tr>
@@ -177,6 +180,13 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $task->user->name }}</div>
                                     <div class="text-sm text-gray-500">{{ $task->user->email }}</div>
+                                </td>
+                                <td>
+                                    @if($task->user->positions->count() > 0)
+                                        {{ $task->user->positions->pluck('name')->implode(', ') }}
+                                    @else
+                                        <span class="text-gray-500">No positions assigned</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $task->start_date->format('M d, Y') }}</div>

@@ -52,6 +52,22 @@
                         placeholder="alamat@email.com" value="{{ old('email') }}">
                     <span class="text-red-500 text-xs hidden" id="emailError"></span>
                 </div>
+
+                <div>
+                    <label for="position_id" class="block text-sm font-medium text-gray-700 mb-1">Posisi</label>
+                    <select id="position_id" name="position_id" 
+                        class="appearance-none relative block w-full px-3 py-3 border border-gray-300 
+                                placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 
+                                focus:border-indigo-500 sm:text-sm">
+                        <option value="">Pilih Posisi</option>
+                        @foreach($positions as $position)
+                            <option value="{{ $position->id }}" {{ old('position_id') == $position->id ? 'selected' : '' }}>
+                                {{ $position->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <span class="text-red-500 text-xs hidden" id="positionError"></span>
+                </div>
                 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
@@ -143,6 +159,7 @@
 
             const $nameError = $('#nameError');
             const $emailError = $('#emailError');
+            const $positionError = $('#positionError');
             const $passwordError = $('#passwordError');
             const $passwordConfirmError = $('#passwordConfirmError');
             const $termsError = $('#termsError');
@@ -166,6 +183,16 @@
                     return false;
                 }
                 $emailError.hide();
+                return true;
+            }
+
+            function validatePosition() {
+                const positionId = $('#position_id').val();
+                if (!positionId) {
+                    $positionError.text('Pilih posisi').show();
+                    return false;
+                }
+                $positionError.hide();
                 return true;
             }
             
@@ -222,15 +249,17 @@
             function validateForm() {
                 const isNameValid = validateName();
                 const isEmailValid = validateEmail();
+                const isPositionValid = validatePosition();
                 const isPasswordValid = validatePassword();
                 const isPasswordConfirmValid = validatePasswordConfirm();
                 const isTermsValid = validateTerms();
                 
-                return isNameValid && isEmailValid && isPasswordValid && isPasswordConfirmValid && isTermsValid;
+                return isNameValid && isEmailValid && isPositionValid && isPasswordValid && isPasswordConfirmValid && isTermsValid;
             }
             
             $('#name').on('input', validateName);
             $('#email').on('input', validateEmail);
+            $('#position_id').on('change', validatePosition);
             $password.on('input', function() {
                 validatePassword();
                 validatePasswordConfirm();

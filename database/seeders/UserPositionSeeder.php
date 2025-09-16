@@ -10,20 +10,33 @@ class UserPositionSeeder extends Seeder
 {
     public function run()
     {
-        // Ambil beberapa user dan position untuk dibuat relasi
-        $users = DB::table('users')->take(5)->get();
-        $positions = DB::table('positions')->take(5)->get();
+        $users = DB::table('users')->get();
+        $positions = DB::table('positions')->get();
 
-        foreach ($users as $index => $user) {
-            if (isset($positions[$index])) {
-                DB::table('user_positions')->insert([
-                    'id' => Str::uuid(),
-                    'user_id' => $user->id,
-                    'position_id' => $positions[$index]->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+        if ($users->isEmpty() || $positions->isEmpty()) {
+            $this->command->warn('Tidak ada data users atau positions. Seeder di-skip.');
+            return;
         }
+
+        $userPositions = [];
+
+        foreach ($users as $user) {
+            $randomPosition = $positions->random();
+            
+            $userPositions[] = [
+                'id' => Str::uuid(),
+                'user_id' => $user->id,
+                'position_id' => $randomPosition->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        $chunks = array_chunk($userPositions, 100);
+        foreach ($chunks as $chunk) {
+            DB::table('user_positions')->insert($chunk);
+        }
+
+        $this->command->info('UserPositionSeeder berhasil: ' . count($userPositions) . ' relasi user-position dibuat.');
     }
 }
