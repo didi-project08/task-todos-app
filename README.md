@@ -98,7 +98,13 @@ Struktur Aplikasi
             ├── Models/
             ├── Views/
             └── router.php
- 
+    
+    untuk audit log ada di
+
+    storage/
+    └── logs/
+        └── audit-xxxx-xx-xx.log
+
 Penjelasan Modul: 
 
     Modul Auth: Menangani autentikasi pengguna (login dan register)
