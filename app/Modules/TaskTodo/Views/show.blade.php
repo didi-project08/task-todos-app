@@ -4,9 +4,11 @@
     <h1 class="text-3xl font-bold text-gray-800 mb-5">Detail Tugas</h1>
     <div class="flex justify-end items-end mb-6">
         <div class="flex space-x-2">
-            <a href="{{ route('task-todos.edit', $task->id) }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-200">
-                Edit
-            </a>
+            @if (auth()->check() && Auth()->id() === $task->user->id)
+                <a href="{{ route('task-todos.edit', $task->id) }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-200">
+                    Edit
+                </a>
+            @endif
             <a href="{{ route('task-todos.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg transition duration-200">
                 Kembali ke Managemen Tugas
             </a>

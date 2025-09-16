@@ -151,6 +151,12 @@ class MainController extends Controller
     {
         try {
             $task = Task::findOrFail($id);
+
+            if (Auth()->check() && Auth()->id() !== $task->user->id) {
+                return redirect()->route('task-todos.index')
+                    ->with('error', 'Anda tidak memiliki akses untuk mengupdate data ini.');
+            }
+
             $users = User::orderBy('name')->get();
 
             Log::channel('audit')->info('User accessed edit form', [
@@ -176,7 +182,7 @@ class MainController extends Controller
     {
         try {
             $task = Task::findOrFail($id);
-
+            
             $validated = $request->validate([
                 'user_id' => 'required|uuid|exists:users,id',
                 'todo' => 'required|string|max:1000',
@@ -214,6 +220,11 @@ class MainController extends Controller
     {
         try {
             $task = Task::findOrFail($id);
+            if (Auth()->check() && Auth()->id() !== $task->user->id) {
+                return redirect()->route('task-todos.index')
+                    ->with('error', 'Anda tidak memiliki akses untuk menghapus data ini.');
+            }
+
             $taskData = $task->toArray();
             $task->delete();
 
