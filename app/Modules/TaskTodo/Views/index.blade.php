@@ -306,7 +306,7 @@
 
         function confirmDelete(taskId, taskName) {
             $('#taskName').text(taskName);
-            $('#deleteForm').attr('action', '/task-todos/destroy' + taskId);
+            $('#deleteForm').attr('action', '/task-todos/destroy/' + taskId);
             
             $('#deleteModal').removeClass('hidden');
             $('#mainContent').addClass('blur-sm');
