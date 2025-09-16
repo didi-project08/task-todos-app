@@ -121,6 +121,10 @@ Cara Penggunaan
         Kunjungi halaman /login
         Masukkan email dan password yang telah didaftarkan
 
+    Profil:
+        Klik bagian nama di header sebelah tombol logout
+        sekarang anda bisa mengupdate profil dan ubah password
+
     Manajemen Task: 
          Setelah login, Anda akan diarahkan ke halaman task management
          Buat tugas baru dengan mengklik tombol "Tambah Tugas Baru"
