@@ -44,11 +44,11 @@
                 <div class="space-y-3">
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Tanggal Mulai</label>
-                        <p class="mt-1 text-gray-900">{{ $task->start_date->format('F d, Y') }}</p>
+                        <p class="mt-1 text-gray-900">{{ $task->start_date->format('d F, Y') }}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Tanggal Akhir</label>
-                        <p class="mt-1 text-gray-900">{{ $task->end_date->format('F d, Y') }}</p>
+                        <p class="mt-1 text-gray-900">{{ $task->end_date->format('d F, Y') }}</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-600">Durasi</label>
@@ -63,11 +63,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-600">Created At</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $task->created_at->format('M d, Y H:i') }}</p>
+                    <p class="mt-1 text-sm text-gray-900">{{ $task->created_at->format('d M, Y H:i') }}</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-600">Last Updated</label>
-                    <p class="mt-1 text-sm text-gray-900">{{ $task->updated_at->format('M d, Y H:i') }}</p>
+                    <p class="mt-1 text-sm text-gray-900">{{ $task->updated_at->format('d M, Y H:i') }}</p>
                 </div>
             </div>
         </div>

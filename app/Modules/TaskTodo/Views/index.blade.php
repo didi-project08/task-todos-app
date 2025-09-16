@@ -189,10 +189,10 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $task->start_date->format('M d, Y') }}</div>
+                                    <div class="text-sm text-gray-900">{{ $task->start_date->format('d M, Y') }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $task->end_date->format('M d, Y') }}</div>
+                                    <div class="text-sm text-gray-900">{{ $task->end_date->format('d M, Y') }}</div>
                                 </td>
                             </tr>
                         @empty
