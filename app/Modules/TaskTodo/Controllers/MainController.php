@@ -182,6 +182,11 @@ class MainController extends Controller
     {
         try {
             $task = Task::findOrFail($id);
+
+            if (Auth()->check() && Auth()->id() !== $task->user->id) {
+                return redirect()->route('task-todos.index')
+                    ->with('error', 'Anda tidak memiliki akses untuk mengupdate data ini.');
+            }
             
             $validated = $request->validate([
                 'user_id' => 'required|uuid|exists:users,id',
