@@ -51,7 +51,7 @@
                         <p class="mt-1 text-gray-900">{{ $task->end_date->format('d F, Y') }}</p>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-600">Durasi</label>
+                        <label class="block text-sm font-medium text-gray-600">Deadline</label>
                         <p class="mt-1 text-gray-900">{{ $task->start_date->diffInDays($task->end_date) }} days</p>
                     </div>
                 </div>
