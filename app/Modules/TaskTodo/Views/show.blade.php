@@ -10,7 +10,7 @@
                 </a>
             @endif
             <a href="{{ route('task-todos.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg transition duration-200">
-                Kembali ke Managemen Tugas
+                Kembali
             </a>
         </div>
     </div>
@@ -21,7 +21,7 @@
                 <h2 class="text-lg font-semibold text-gray-700 mb-2">Informasi Tugas</h2>
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-sm font-medium text-gray-600">Deskripsi</label>
+                        <label class="block text-sm font-medium text-gray-600">To Do</label>
                         <p class="mt-1 text-gray-900 bg-gray-50 p-3 rounded">{{ $task->todo }}</p>
                     </div>
                     <div>

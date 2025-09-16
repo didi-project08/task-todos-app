@@ -21,8 +21,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="todo" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Tugas</label>
-            <textarea name="todo" id="todo" rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ketik deskripsi tugas...">{{ old('todo', $task->todo) }}</textarea>
+            <label for="todo" class="block text-sm font-medium text-gray-700 mb-2">To Do</label>
+            <textarea name="todo" id="todo" rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ketik todo...">{{ old('todo', $task->todo) }}</textarea>
             @error('todo')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
         </div>
 

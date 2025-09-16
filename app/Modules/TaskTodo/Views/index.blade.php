@@ -69,7 +69,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-1">Pencarian</label>
                         <input type="text" name="search" value="{{ request('search') }}" 
                             class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                            placeholder="Cari tugas...">
+                            placeholder="Cari todo...">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Ditugaskan Ke</label>
@@ -124,7 +124,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tugas</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Todo</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ditugaskan Ke</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posisi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Mulai</th>
